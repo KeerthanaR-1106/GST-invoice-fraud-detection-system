@@ -1,14 +1,8 @@
-\# GST Invoice Fraud Detection System
-
-
+ GST Invoice Fraud Detection System
 
 An automated system for detecting potentially fraudulent GST invoices using anomaly detection techniques.
 
-
-
-\## Technologies
-
-
+Technologies
 
 \- Python
 
