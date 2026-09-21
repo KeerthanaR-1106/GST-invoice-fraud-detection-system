@@ -1,0 +1,143 @@
+import pandas as pd
+
+from sklearn.metrics import (
+    confusion_matrix,
+    classification_report,
+    precision_score,
+    recall_score,
+    f1_score
+)
+
+
+# ============================================================
+# LOAD LOF RESULTS
+# ============================================================
+
+results = pd.read_csv(
+    "data/lof_results.csv"
+)
+
+print("LOF results loaded.")
+print("Results shape:", results.shape)
+
+
+# ============================================================
+# LOAD GROUND TRUTH
+# ============================================================
+
+ground_truth = pd.read_csv(
+    "data/ground_truth.csv"
+)
+
+print("Ground truth loaded.")
+print("Ground truth shape:", ground_truth.shape)
+
+
+# ============================================================
+# MERGE
+# ============================================================
+
+evaluation = results.merge(
+    ground_truth,
+    on="invoice_no",
+    how="inner"
+)
+
+print(
+    "\nEvaluation dataset shape:",
+    evaluation.shape
+)
+
+
+# ============================================================
+# ACTUAL VS PREDICTED
+# ============================================================
+
+y_actual = evaluation[
+    "actual_anomaly"
+]
+
+y_predicted = evaluation[
+    "lof_anomaly"
+]
+
+
+# ============================================================
+# CONFUSION MATRIX
+# ============================================================
+
+cm = confusion_matrix(
+    y_actual,
+    y_predicted
+)
+
+print(
+    "\nConfusion Matrix:"
+)
+
+print(cm)
+
+
+# ============================================================
+# PRECISION
+# ============================================================
+
+precision = precision_score(
+    y_actual,
+    y_predicted
+)
+
+print(
+    "\nPrecision:",
+    precision
+)
+
+
+# ============================================================
+# RECALL
+# ============================================================
+
+recall = recall_score(
+    y_actual,
+    y_predicted
+)
+
+print(
+    "Recall:",
+    recall
+)
+
+
+# ============================================================
+# F1 SCORE
+# ============================================================
+
+f1 = f1_score(
+    y_actual,
+    y_predicted
+)
+
+print(
+    "F1 Score:",
+    f1
+)
+
+
+# ============================================================
+# CLASSIFICATION REPORT
+# ============================================================
+
+print(
+    "\nClassification Report:"
+)
+
+print(
+    classification_report(
+        y_actual,
+        y_predicted,
+        target_names=[
+            "Normal",
+            "Anomaly"
+        ]
+    )
+)

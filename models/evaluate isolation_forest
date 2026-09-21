@@ -1,0 +1,119 @@
+import pandas as pd
+
+from sklearn.metrics import (
+    confusion_matrix,
+    classification_report,
+    precision_score,
+    recall_score,
+    f1_score
+)
+
+
+# ==========================================
+# 1. LOAD MODEL RESULTS
+# ==========================================
+
+results = pd.read_csv(
+    "data/isolation_forest_results.csv"
+)
+
+print("Isolation Forest results loaded.")
+print("Results shape:", results.shape)
+
+
+# ==========================================
+# 2. LOAD GROUND TRUTH
+# ==========================================
+
+ground_truth = pd.read_csv(
+    "data/ground_truth.csv"
+)
+
+print("Ground truth loaded.")
+print("Ground truth shape:", ground_truth.shape)
+
+
+# ==========================================
+# 3. MERGE USING INVOICE NUMBER
+# ==========================================
+
+evaluation = results.merge(
+    ground_truth,
+    on="invoice_no",
+    how="inner"
+)
+
+print("\nEvaluation dataset shape:", evaluation.shape)
+
+
+# ==========================================
+# 4. ACTUAL AND PREDICTED VALUES
+# ==========================================
+
+y_actual = evaluation["actual_anomaly"]
+
+y_predicted = evaluation["isolation_anomaly"]
+
+
+# ==========================================
+# 5. CONFUSION MATRIX
+# ==========================================
+
+cm = confusion_matrix(
+    y_actual,
+    y_predicted
+)
+
+print("\nConfusion Matrix:")
+print(cm)
+
+
+# ==========================================
+# 6. PRECISION
+# ==========================================
+
+precision = precision_score(
+    y_actual,
+    y_predicted
+)
+
+print("\nPrecision:", precision)
+
+
+# ==========================================
+# 7. RECALL
+# ==========================================
+
+recall = recall_score(
+    y_actual,
+    y_predicted
+)
+
+print("Recall:", recall)
+
+
+# ==========================================
+# 8. F1 SCORE
+# ==========================================
+
+f1 = f1_score(
+    y_actual,
+    y_predicted
+)
+
+print("F1 Score:", f1)
+
+
+# ==========================================
+# 9. CLASSIFICATION REPORT
+# ==========================================
+
+print("\nClassification Report:")
+
+print(
+    classification_report(
+        y_actual,
+        y_predicted,
+        target_names=["Normal", "Anomaly"]
+    )
+)

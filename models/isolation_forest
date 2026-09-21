@@ -1,0 +1,92 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import IsolationForest
+
+
+# --------------------------------------------------
+# 1. Load ML features
+# --------------------------------------------------
+
+features = pd.read_csv("data/ml_features.csv")
+
+
+# --------------------------------------------------
+# 2. Load invoice numbers separately
+# --------------------------------------------------
+
+invoice_info = pd.read_csv(
+    "data/gst_invoices.csv",
+    usecols=["invoice_no"]
+)
+
+
+# --------------------------------------------------
+# 3. Prepare feature matrix
+# --------------------------------------------------
+
+X = features.copy()
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+
+# --------------------------------------------------
+# 4. Train Isolation Forest
+# --------------------------------------------------
+
+model = IsolationForest(
+    n_estimators=200,
+    contamination=0.05,
+    random_state=42,
+    n_jobs=-1
+)
+
+model.fit(X_scaled)
+
+
+# --------------------------------------------------
+# 5. Predict anomalies
+# --------------------------------------------------
+
+predictions = model.predict(X_scaled)
+
+
+# --------------------------------------------------
+# 6. Calculate anomaly scores
+# --------------------------------------------------
+
+scores = -model.score_samples(X_scaled)
+
+
+# --------------------------------------------------
+# 7. Create result DataFrame
+# --------------------------------------------------
+
+results = pd.DataFrame()
+
+results["invoice_no"] = invoice_info["invoice_no"]
+
+results["isolation_prediction"] = predictions
+
+results["isolation_anomaly"] = (
+    predictions == -1
+).astype(int)
+
+results["isolation_score"] = scores
+
+
+# --------------------------------------------------
+# 8. Save results
+# --------------------------------------------------
+
+results.to_csv(
+    "data/isolation_forest_results.csv",
+    index=False
+)
+
+
+print("Isolation Forest completed successfully.")
+print("Results saved to data/isolation_forest_results.csv")
+print()
+print("Number of anomalies detected:",
+      results["isolation_anomaly"].sum())
