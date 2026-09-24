@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-header mb-4">
+    <h1>Invoice Risk Results</h1>
+    <p class="text-muted mb-0">Search, filter, and review anomalies by risk score.</p>
+  </div>
+
+  {% if error %}
+    <div class="alert alert-warning">{{ error }}</div>
+  {% else %}
+    <div class="card panel-card mb-4">
+      <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+          <div class="col-md-5">
+            <label class="form-label">Search by Invoice Number</label>
+            <input type="text" class="form-control" name="q" value="{{ filters.q }}" placeholder="e.g. INV000001">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Risk Level</label>
+            <select class="form-select" name="risk_level">
+              <option value="all" {% if filters.risk_level == 'all' %}selected{% endif %}>All</option>
+              <option value="Low" {% if filters.risk_level == 'Low' %}selected{% endif %}>Low</option>
+              <option value="Medium" {% if filters.risk_level == 'Medium' %}selected{% endif %}>Medium</option>
+              <option value="High" {% if filters.risk_level == 'High' %}selected{% endif %}>High</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label">Sort</label>
+            <select class="form-select" name="sort">
+              <option value="desc" {% if filters.sort == 'desc' %}selected{% endif %}>Highest First</option>
+              <option value="asc" {% if filters.sort == 'asc' %}selected{% endif %}>Lowest First</option>
+            </select>
+          </div>
+          <div class="col-md-2 d-grid">
+            <button class="btn btn-primary" type="submit">Apply</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card panel-card">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>Invoice No</th>
+                <th>Final Risk Score</th>
+                <th>Risk Level</th>
+                <th>Explanation</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+                <tr>
+                  <td>{{ row.invoice_no }}</td>
+                  <td>{{ '%.6f' % row.final_risk_score }}</td>
+                  <td><span class="risk-badge risk-{{ row.risk_level|lower }}">{{ row.risk_level }}</span></td>
+                  <td>{{ row.explanation }}</td>
+                  <td><a href="/invoice/{{ row.invoice_no }}" class="btn btn-sm btn-outline-primary">View Details</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

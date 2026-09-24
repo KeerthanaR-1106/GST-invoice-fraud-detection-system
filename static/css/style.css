@@ -1,0 +1,143 @@
+body {
+  background: #f4f7fb;
+  color: #1f2937;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  max-width: 1400px;
+}
+
+.dashboard-header {
+  background: linear-gradient(135deg, #0d3b66 0%, #1a6ea8 100%);
+  box-shadow: 0 6px 18px rgba(13, 59, 102, 0.18);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.navbar-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+}
+
+.page-header h1 {
+  margin-bottom: 0.2rem;
+  font-weight: 700;
+  color: #17324d;
+}
+
+.metric-card {
+  border: 1px solid #dfeaf5;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.04);
+  background: #fff;
+}
+
+.metric-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.metric-value.low { color: #2e7d32; }
+.metric-value.medium { color: #f9a825; }
+.metric-value.high { color: #d32f2f; }
+
+.panel-card {
+  border: 1px solid #deebf7;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  background: #fff;
+}
+
+.card-header {
+  background: #f8fbff;
+  border-bottom: 1px solid #deebf7;
+  font-weight: 700;
+  color: #17324d;
+}
+
+.invoice-code {
+  display: inline-block;
+  background: #eaf3ff;
+  color: #0b3d72;
+  border: 1px solid #bfd7f7;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-weight: 700;
+}
+
+.risk-badge {
+  display: inline-block;
+  padding: 0.38rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.risk-low {
+  background: rgba(46, 125, 50, 0.12);
+  color: #2e7d32;
+}
+
+.risk-medium {
+  background: rgba(249, 168, 37, 0.15);
+  color: #9a6700;
+}
+
+.risk-high {
+  background: rgba(211, 47, 47, 0.12);
+  color: #b71c1c;
+}
+
+.detail-list dt {
+  font-weight: 600;
+  color: #334155;
+}
+
+.detail-list dd {
+  margin-bottom: 0.5rem;
+  color: #0f172a;
+}
+
+.table thead th {
+  border-bottom: none;
+}
+
+.table tbody td {
+  vertical-align: middle;
+}
+
+@media (max-width: 767.98px) {
+  .navbar-nav {
+    gap: 0.5rem !important;
+    flex-wrap: wrap;
+  }
+
+  .navbar-brand {
+    font-size: 1rem;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+  }
+}

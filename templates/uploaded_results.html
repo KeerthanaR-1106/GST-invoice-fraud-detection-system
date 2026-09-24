@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Uploaded Dataset Results</h2>
+
+  {% if error %}
+    <div class="alert alert-warning">{{ error }}</div>
+  {% else %}
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card bg-light h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted">Uploaded Invoices</h6>
+            <h3>{{ summary.uploaded_invoices }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-light h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted">Low Risk</h6>
+            <h3>{{ summary.low_risk_count }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-light h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted">Medium Risk</h6>
+            <h3>{{ summary.medium_risk_count }}</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-light h-100">
+          <div class="card-body">
+            <h6 class="text-uppercase text-muted">High Risk</h6>
+            <h3>{{ summary.high_risk_count }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p><strong>Average risk score:</strong> {{ '%.6f' % summary.average_risk_score }}</p>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Invoice No</th>
+            <th>Final Risk Score</th>
+            <th>Risk Level</th>
+            <th>Explanation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+            <tr>
+              <td>{{ row.invoice_no }}</td>
+              <td>{{ '%.6f' % row.final_risk_score }}</td>
+              <td>{{ row.risk_level }}</td>
+              <td>{{ row.explanation }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+{% endblock %}
