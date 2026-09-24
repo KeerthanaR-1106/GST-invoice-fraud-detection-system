@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-header mb-4">
+    <h1>Upload GST Invoice CSV</h1>
+    <p class="text-muted mb-0">Upload a CSV invoice dataset for anomaly detection and risk review.</p>
+  </div>
+
+  {% if message %}
+    <div class="alert alert-info">{{ message }}</div>
+  {% endif %}
+
+  <div class="card panel-card">
+    <div class="card-body">
+      <div class="mb-3">
+        <strong>File requirements:</strong>
+        <ul class="mb-0 mt-2">
+          <li>CSV file only</li>
+          <li>Maximum size: 10 MB</li>
+          <li>Required invoice schema must be present</li>
+        </ul>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Choose CSV file</label>
+          <input class="form-control" type="file" name="file" accept=".csv">
+        </div>
+        <button class="btn btn-success" type="submit">Upload and Process</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

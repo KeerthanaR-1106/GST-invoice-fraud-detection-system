@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-header mb-4">
+    <h1>Model Evaluation</h1>
+    <p class="text-muted mb-0">Comparison of anomaly-detection methods against the labeled dataset.</p>
+  </div>
+
+  {% if error %}
+    <div class="alert alert-warning">{{ error }}</div>
+  {% else %}
+    <div class="card panel-card mb-4">
+      <div class="card-header">Model Comparison Metrics</div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>Method</th>
+                <th>Accuracy</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1 Score</th>
+                <th>ROC-AUC</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in metrics %}
+                <tr>
+                  <td>{{ row.method }}</td>
+                  <td>{{ '%.4f' % row.accuracy }}</td>
+                  <td>{{ '%.4f' % row.precision }}</td>
+                  <td>{{ '%.4f' % row.recall }}</td>
+                  <td>{{ '%.4f' % row.f1_score }}</td>
+                  <td>{{ '%.4f' % row.roc_auc }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card panel-card mb-4">
+      <div class="card-header">Method Comparison Chart</div>
+      <div class="card-body">
+        <canvas id="modelComparisonChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card panel-card">
+      <div class="card-header">Confusion Matrix</div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>Method</th>
+                <th>True Positive</th>
+                <th>True Negative</th>
+                <th>False Positive</th>
+                <th>False Negative</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in confusion %}
+                <tr>
+                  <td>{{ row.method }}</td>
+                  <td>{{ row.true_positive }}</td>
+                  <td>{{ row.true_negative }}</td>
+                  <td>{{ row.false_positive }}</td>
+                  <td>{{ row.false_negative }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <script>
+    window.modelChartData = {{ model_chart_data|tojson }};
+  </script>
+{% endblock %}

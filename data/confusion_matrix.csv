@@ -1,0 +1,5 @@
+method,true_positive,true_negative,false_positive,false_negative
+Isolation Forest,411,18427,573,589
+LOF,267,18827,173,733
+Z-score,691,17310,1690,309
+Ensemble,275,18889,111,725

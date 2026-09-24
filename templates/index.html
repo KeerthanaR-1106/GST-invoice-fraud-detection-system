@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="page-header mb-4">
+    <h1>Risk Overview</h1>
+    <p class="text-muted mb-0">Anomaly detection results for GST invoice review.</p>
+  </div>
+
+  {% if error %}
+    <div class="alert alert-warning">{{ error }}</div>
+  {% else %}
+    <div class="row g-3 mb-4">
+      <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card metric-card h-100">
+          <div class="card-body">
+            <div class="metric-label">Total Invoices</div>
+            <div class="metric-value">{{ summary.total_invoices }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card metric-card h-100">
+          <div class="card-body">
+            <div class="metric-label">Low Risk</div>
+            <div class="metric-value low">{{ summary.low_risk_count }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card metric-card h-100">
+          <div class="card-body">
+            <div class="metric-label">Medium Risk</div>
+            <div class="metric-value medium">{{ summary.medium_risk_count }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card metric-card h-100">
+          <div class="card-body">
+            <div class="metric-label">High Risk</div>
+            <div class="metric-value high">{{ summary.high_risk_count }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card metric-card h-100">
+          <div class="card-body">
+            <div class="metric-label">Average Risk Score</div>
+            <div class="metric-value">{{ '%.4f' % summary.average_risk_score }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-2 col-md-4 col-sm-6">
+        <div class="card metric-card h-100">
+          <div class="card-body">
+            <div class="metric-label">Requires Review</div>
+            <div class="metric-value">{{ summary.invoices_requiring_review }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-lg-6">
+        <div class="card panel-card h-100">
+          <div class="card-header">Risk Distribution</div>
+          <div class="card-body">
+            <canvas id="riskDistributionChart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card panel-card h-100">
+          <div class="card-header">Risk Score Distribution</div>
+          <div class="card-body">
+            <canvas id="riskScoreDistributionChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-12">
+        <div class="card panel-card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span>High-Risk Invoices</span>
+            <a href="/results?risk_level=High" class="btn btn-sm btn-outline-primary">View All</a>
+          </div>
+          <div class="card-body">
+            {% if high_risk_rows %}
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                  <thead>
+                    <tr>
+                      <th>Invoice No</th>
+                      <th>Risk Score</th>
+                      <th>Risk Level</th>
+                      <th>Explanation</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for row in high_risk_rows %}
+                      <tr>
+                        <td>{{ row.invoice_no }}</td>
+                        <td>{{ '%.6f' % row.final_risk_score }}</td>
+                        <td><span class="risk-badge risk-high">{{ row.risk_level }}</span></td>
+                        <td>{{ row.explanation }}</td>
+                        <td><a href="/invoice/{{ row.invoice_no }}" class="btn btn-sm btn-primary">View Details</a></td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <p class="text-muted mb-0">No high-risk invoices currently identified.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12">
+        <div class="card panel-card">
+          <div class="card-header">Top Suspicious Invoices</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Invoice No</th>
+                    <th>Risk Score</th>
+                    <th>Risk Level</th>
+                    <th>Explanation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in suspicious_rows %}
+                    <tr>
+                      <td><a href="/invoice/{{ row.invoice_no }}">{{ row.invoice_no }}</a></td>
+                      <td>{{ '%.6f' % row.final_risk_score }}</td>
+                      <td><span class="risk-badge risk-{{ row.risk_level|lower }}">{{ row.risk_level }}</span></td>
+                      <td>{{ row.explanation }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <script>
+    window.dashboardData = {
+      riskDistribution: {{ risk_distribution|tojson }},
+      riskScoreDistribution: {{ score_distribution|tojson }}
+    };
+  </script>
+{% endblock %}

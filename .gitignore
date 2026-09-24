@@ -1,6 +1,6 @@
 # Python
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 
 # Virtual environment
@@ -36,3 +36,8 @@ models/*.joblib
 
 # Large/generated datasets
 dataset/generated/
+
+# Project-specific generated and local-only content
+data/uploads/
+GST_Invoice_Fraud_Detection_BACKUP/
+GST-invoice-fraud-detection-system/

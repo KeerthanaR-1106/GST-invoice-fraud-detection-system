@@ -1,26 +1,9 @@
- GST Invoice Fraud Detection System
+# Automated GST Invoice Fraud Detection System (Student Project)
 
-An automated system for detecting potentially fraudulent GST invoices using anomaly detection techniques.
+Phase 1: Project skeleton and environment setup.
 
-Technologies
+This repository implements an educational system to detect potentially anomalous GST invoices using multiple anomaly-detection techniques. The full project will include preprocessing, feature engineering, multiple anomaly detectors (Isolation Forest, LOF, Z-score), an ensemble scoring step, explainable reasons, a SQLite database, and a Flask-based dashboard.
 
-\- Python
+This initial phase creates the project structure and minimal placeholder files so development can proceed incrementally.
 
-\- Flask
-
-\- Pandas
-
-\- NumPy
-
-\- Scikit-learn
-
-\- SQLite
-
-\- HTML
-
-\- CSS
-
-\- Bootstrap
-
-\- JavaScript
-
+See project modules in the repository root for future work.
